@@ -7,6 +7,7 @@ from .models import Commentary, Post, User
 
 admin.site.unregister(Group)
 
+
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ("title", "owner", "created_time")
@@ -19,5 +20,6 @@ class CommentaryAdmin(admin.ModelAdmin):
     list_display = ("user", "post", "created_time")
     list_filter = ("user", "post")
     search_fields = ("content",)
+
 
 admin.site.register(User)

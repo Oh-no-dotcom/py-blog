@@ -15,10 +15,14 @@ def index(request):
     page_obj = paginator.get_page(page_number)
 
     context = {
-        "post_list":page_obj.object_list,
-        "page_obj":page_obj,
+        "post_list": page_obj.object_list,
+        "page_obj": page_obj,
     }
-    return render(request, "index.html",  context=context)
+    return render(
+        request,
+        "index.html",
+        context=context
+    )
 
 
 class PostDetailView(generic.DetailView):
