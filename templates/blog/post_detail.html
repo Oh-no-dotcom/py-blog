@@ -1,7 +1,7 @@
 {% extends "base.html" %}
+{% load crispy_forms_filters %}
 
 {% block content %}
-  {% load crispy_forms_tags %}
   <div class="container">
     <div class="card mb-3">
       <div class="card-header">
@@ -16,7 +16,7 @@
     {% for comment in post.commentary_set.all %}
       <div class="card mb-2">
         <div class="card-header">
-          {{ comment.user }}
+          {{ comment.user.username }} - {{ comment.created_time }}
         </div>
         <div class="card-body">
           <p class="card-text">{{ comment.content }}</p>
@@ -30,7 +30,7 @@
   {% if user.is_authenticated %}
   <form method="post">
     {% csrf_token %}
-    {% crispy form %}
+    {{ form|crispy }}
     <button type="submit" class="btn btn-primary mt-3">Send</button>
   </form>
   {% endif %}

@@ -1,6 +1,5 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import generic
 
@@ -31,9 +30,19 @@ class PostDetailView(generic.DetailView):
     context_object_name = "post"
 
     def get_success_url(self):
-        return reverse("post-detail", kwargs={"pk": self.object.pk})
+        return reverse("blog:post-detail", kwargs={"pk": self.object.pk})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = CommentaryForm()
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = CommentaryForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.post = self.object
+            comment.save()
+        return redirect(self.get_success_url())
